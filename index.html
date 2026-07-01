@@ -247,34 +247,46 @@
   /* ===== Schedule modal ===== */
   .modal-overlay{
     display:none; position:fixed; inset:0; z-index:200;
-    background:rgba(43,41,38,0.55);
-    align-items:center; justify-content:center; padding:20px;
+    background:rgba(43,41,38,0.65);
+    align-items:center; justify-content:center; padding:16px;
   }
   .modal-overlay.show{display:flex;}
   .modal-box{
-    background:#fff; border-radius:22px; max-width:560px; width:100%;
-    max-height:86vh; overflow-y:auto; padding:32px 28px;
-    position:relative; box-shadow:0 30px 60px -20px rgba(43,41,38,.45);
+    background:#fff; border-radius:24px; max-width:960px; width:100%;
+    max-height:92vh; overflow-y:auto; padding:44px 44px 36px;
+    position:relative; box-shadow:0 40px 80px -20px rgba(43,41,38,.5);
   }
   .modal-close{
-    position:absolute; top:18px; right:18px; width:34px; height:34px;
+    position:absolute; top:20px; right:20px; width:38px; height:38px;
     border-radius:50%; border:none; background:var(--mist); color:var(--plum-deep);
-    font-size:1.3rem; line-height:1; display:flex; align-items:center; justify-content:center;
+    font-size:1.4rem; line-height:1; display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
   }
-  .modal-close:hover{background:var(--line);}
-  .modal-box h4{color:var(--plum-deep); font-size:1.3rem; padding-right:30px;}
-  .modal-date{font-size:.8rem; color:var(--plum-soft); text-transform:uppercase; letter-spacing:.08em; font-weight:600; margin-bottom:22px;}
-
-  .modal-ministries{display:flex; flex-direction:column; gap:18px;}
+  .modal-close:hover{background:#ccc;}
+  .modal-box h4{color:var(--plum-deep); font-size:1.6rem; padding-right:40px;}
+  .modal-date{
+    font-size:.85rem; color:var(--plum-soft); text-transform:uppercase;
+    letter-spacing:.1em; font-weight:600; margin-bottom:28px; margin-top:4px;
+  }
+  .modal-ministries{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media (max-width:700px){ .modal-ministries{grid-template-columns:1fr;} }
   .ministry-block{
-    border:1px solid var(--line); border-radius:16px; padding:18px 20px;
+    border:1.5px solid var(--line); border-radius:18px; padding:22px 24px;
+    background:var(--cream);
   }
-  .ministry-block-head{display:flex; align-items:center; gap:9px; margin-bottom:10px;}
-  .ministry-block-head .mb-icon{font-size:1.15rem;}
-  .ministry-block-head h5{font-family:'Fraunces',serif; font-size:1.02rem; color:var(--plum-deep);}
-  .ministry-block .sd-people{font-size:.9rem; color:#4d4255;}
+  .ministry-block-head{
+    display:flex; align-items:center; gap:10px; margin-bottom:14px;
+    padding-bottom:12px; border-bottom:1px solid var(--line);
+  }
+  .ministry-block-head .mb-icon{font-size:1.4rem;}
+  .ministry-block-head h5{font-family:'Fraunces',serif; font-size:1.15rem; color:var(--plum-deep);}
+  .ministry-block .sd-people{font-size:.92rem; color:#3a2e42; line-height:1.7;}
   .ministry-block .sd-empty{font-size:.88rem; color:#9b8fa3; font-style:italic;}
-  .ministry-block .sd-event-name{font-size:.74rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--gold); margin-bottom:6px;}
+  .ministry-block .sd-event-name{
+    font-size:.72rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:10px; display:inline-block;
+    background:rgba(163,66,46,.1); padding:3px 10px; border-radius:999px;
+  }
 
   .schedule-detail{
     margin-top:28px; background:#fff; border:1px solid var(--line); border-radius:18px;
@@ -345,9 +357,231 @@
     .join-grid{grid-template-columns:1fr;}
   }
 
+  /* ===== Admin Toolbar (shown when admin logged in) ===== */
+  .admin-toolbar{
+    display:none; position:sticky; top:62px; z-index:49;
+    background:#2B2926; color:#fff; padding:10px 24px;
+    align-items:center; justify-content:space-between; gap:12px;
+    font-size:.82rem; font-weight:600;
+  }
+  .admin-toolbar.show{display:flex;}
+  .admin-toolbar .at-label{display:flex; align-items:center; gap:8px;}
+  .admin-toolbar .at-hint{font-weight:400; color:#bbb; font-size:.76rem;}
+  .admin-mode-toggle{
+    padding:6px 16px; border-radius:999px; border:none; font-family:inherit;
+    font-size:.78rem; font-weight:700; cursor:pointer;
+  }
+  .admin-mode-toggle.on{background:var(--gold); color:#fff;}
+  .admin-mode-toggle.off{background:rgba(255,255,255,.15); color:#fff;}
+
+  /* Edit button that appears on hover over editable blocks */
+  .editable-block{position:relative;}
+  .edit-btn{
+    display:none; position:absolute; top:10px; right:10px; z-index:10;
+    background:var(--plum-deep); color:#fff; border:none; border-radius:999px;
+    padding:6px 14px; font-size:.74rem; font-weight:700; cursor:pointer;
+    box-shadow:0 2px 8px rgba(0,0,0,.25); white-space:nowrap;
+  }
+  .admin-edit-mode .editable-block:hover .edit-btn{display:block;}
+  .admin-edit-mode .editable-block{
+    outline:1.5px dashed rgba(163,66,46,.4); border-radius:8px;
+  }
+  .admin-edit-mode .editable-block:hover{outline-color:var(--gold);}
+
+  /* Image swap button */
+  .editable-img-wrap{position:relative; display:block;}
+  .img-swap-btn{
+    display:none; position:absolute; bottom:14px; right:14px;
+    background:rgba(43,41,38,.82); color:#fff; border:none; border-radius:10px;
+    padding:8px 16px; font-size:.78rem; font-weight:700; cursor:pointer;
+    backdrop-filter:blur(4px);
+  }
+  .admin-edit-mode .editable-img-wrap:hover .img-swap-btn{display:block;}
+
+  /* ===== Content Edit Modal ===== */
+  .cedit-overlay{
+    display:none; position:fixed; inset:0; z-index:300;
+    background:rgba(43,41,38,.6); align-items:center; justify-content:center; padding:16px;
+  }
+  .cedit-overlay.show{display:flex;}
+  .cedit-box{
+    background:#fff; border-radius:20px; max-width:540px; width:100%;
+    max-height:88vh; overflow-y:auto; padding:34px 30px;
+    position:relative; box-shadow:0 30px 60px -16px rgba(43,41,38,.45);
+  }
+  .cedit-box h4{color:var(--plum-deep); margin-bottom:20px; font-size:1.2rem;}
+  .cedit-close{
+    position:absolute; top:16px; right:16px; width:34px; height:34px;
+    border-radius:50%; border:none; background:var(--mist); color:var(--plum-deep);
+    font-size:1.3rem; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  }
+  .cedit-close:hover{background:#ccc;}
+  .cedit-field{margin-bottom:14px;}
+  .cedit-field label{display:block; font-size:.78rem; font-weight:600; color:var(--plum-deep); margin-bottom:5px;}
+  .cedit-field input, .cedit-field textarea, .cedit-field select{
+    width:100%; padding:10px 14px; border-radius:10px; border:1.5px solid var(--line);
+    font-size:.9rem; font-family:inherit; color:var(--ink); background:#fff;
+  }
+  .cedit-field textarea{min-height:90px; resize:vertical;}
+  .cedit-field input:focus, .cedit-field textarea:focus, .cedit-field select:focus{outline:none; border-color:var(--plum);}
+  .cedit-actions{display:flex; gap:10px; margin-top:18px; flex-wrap:wrap;}
+  .cedit-save{background:var(--plum-deep); color:#fff; border:none; border-radius:999px; padding:10px 22px; font-size:.88rem; font-weight:700; cursor:pointer;}
+  .cedit-cancel{background:var(--mist); color:var(--plum-deep); border:none; border-radius:999px; padding:10px 22px; font-size:.88rem; font-weight:700; cursor:pointer;}
+  .cedit-save:hover{background:#111;}
+  .cedit-msg{font-size:.78rem; color:#2e7d32; margin-top:10px;}
+
+  /* Announce add/delete controls */
+  .announce-actions{display:flex; gap:10px; align-items:center; justify-content:center; margin-bottom:20px; display:none;}
+  .admin-edit-mode .announce-actions{display:flex;}
+  .btn-add-announce{
+    background:var(--plum-deep); color:#fff; border:none; border-radius:999px;
+    padding:9px 20px; font-size:.82rem; font-weight:700; cursor:pointer;
+  }
+  .announce-delete-btn{
+    display:none; position:absolute; top:12px; right:12px;
+    background:#b3261e; color:#fff; border:none; border-radius:999px;
+    padding:4px 10px; font-size:.72rem; font-weight:700; cursor:pointer;
+  }
+  .announce-card{position:relative;}
+  .admin-edit-mode .announce-card .announce-delete-btn{display:block;}
+  .announce-card.editable-block{outline:none!important;}
+  .admin-edit-mode .announce-card:hover{outline:1.5px dashed rgba(163,66,46,.4)!important; border-radius:16px;}
+
+  /* Event add/delete */
+  .events-admin-bar{display:none; text-align:center; margin-bottom:28px;}
+  .admin-edit-mode .events-admin-bar{display:block;}
+  .btn-add-event{
+    background:var(--plum-deep); color:#fff; border:none; border-radius:999px;
+    padding:10px 24px; font-size:.85rem; font-weight:700; cursor:pointer;
+  }
+  .event-card{position:relative;}
+  .event-delete-btn{
+    display:none; position:absolute; top:12px; right:12px; z-index:5;
+    background:#b3261e; color:#fff; border:none; border-radius:999px;
+    padding:5px 11px; font-size:.72rem; font-weight:700; cursor:pointer;
+  }
+  .admin-edit-mode .event-card .event-delete-btn{display:block;}
+
+  /* Contact section */
+  .contact-section{background:var(--mist);}
+  .contact-grid{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:20px;
+    max-width:860px; margin:0 auto;
+  }
+  .contact-card{
+    background:#fff; border:1px solid var(--line); border-radius:18px;
+    padding:26px 22px; text-align:center;
+  }
+  .contact-icon{font-size:1.6rem; margin-bottom:10px;}
+  .contact-label{font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--plum-soft); font-weight:600; margin-bottom:6px;}
+  .contact-value{font-size:.95rem; font-weight:600; color:var(--plum-deep); line-height:1.4;}
+
+  /* ===== Schedule modal LARGE ===== */
+  .modal-overlay{
+    display:none; position:fixed; inset:0; z-index:200;
+    background:rgba(43,41,38,.65);
+    align-items:center; justify-content:center; padding:16px;
+  }
+  .modal-overlay.show{display:flex;}
+  .modal-box{
+    background:#fff; border-radius:24px; max-width:1160px; width:100%;
+    max-height:92vh; overflow-y:auto; padding:48px 50px 40px;
+    position:relative; box-shadow:0 40px 80px -20px rgba(43,41,38,.5);
+  }
+  .modal-close{
+    position:absolute; top:20px; right:20px; width:40px; height:40px;
+    border-radius:50%; border:none; background:var(--mist); color:var(--plum-deep);
+    font-size:1.5rem; line-height:1; display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+  }
+  .modal-close:hover{background:#ccc;}
+  .modal-box h4{color:var(--plum-deep); font-size:1.7rem; padding-right:44px;}
+  .modal-date{
+    font-size:.86rem; color:var(--plum-soft); text-transform:uppercase;
+    letter-spacing:.1em; font-weight:600; margin-bottom:32px; margin-top:5px;
+  }
+  .modal-ministries{display:grid; grid-template-columns:1fr 1fr; gap:24px;}
+  @media (max-width:700px){ .modal-ministries{grid-template-columns:1fr;} }
+  @media (max-width:600px){ .modal-box{padding:28px 18px 22px;} }
+  .ministry-block{
+    border:1.5px solid var(--line); border-radius:18px; padding:24px 26px;
+    background:var(--cream);
+  }
+  .ministry-block-head{
+    display:flex; align-items:center; gap:10px; margin-bottom:14px;
+    padding-bottom:12px; border-bottom:1px solid var(--line);
+  }
+  .ministry-block-head .mb-icon{font-size:1.4rem;}
+  .ministry-block-head h5{font-family:'Fraunces',serif; font-size:1.15rem; color:var(--plum-deep);}
+  .ministry-block .sd-people{font-size:.93rem; color:#3a2e42; line-height:1.8;}
+  .ministry-block .sd-empty{font-size:.88rem; color:#9b8fa3; font-style:italic;}
+  .ministry-block .sd-event-name{
+    font-size:.72rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:12px; display:inline-block;
+    background:rgba(163,66,46,.1); padding:4px 12px; border-radius:999px;
+  }
+
+  .schedule-detail{display:none;}
+  .schedule-detail.show{display:block;}
+
+  .activities-section{background:var(--mist);}
+  .activities-img{
+    width:100%; border-radius:20px; box-shadow:0 20px 40px -24px rgba(43,41,38,.35);
+  }
+
+  /* ===== Youth & Choir community pages ===== */
+  .eyebrow--light{color:var(--gold);}
+  .community-hero{
+    position:relative; padding:90px 24px; text-align:center; overflow:hidden;
+    color:#fff;
+  }
+  .community-hero--youth{background:linear-gradient(135deg, var(--plum-deep), #5C4636);}
+  .community-hero--youngadults{background:linear-gradient(135deg, #211F1C, #6E5340 75%);}
+  .community-hero--choir{background:linear-gradient(135deg, #2B2926, var(--gold) 220%);}
+  .community-hero-inner{max-width:620px; margin:0 auto; position:relative; z-index:2;}
+  .community-hero h2{color:#fff; font-size:clamp(1.9rem,4vw,2.6rem); margin:8px 0 14px;}
+  .community-hero p{color:#EAE2EF; margin-bottom:26px; font-size:1.05rem;}
+
+  .announce-list{display:flex; flex-direction:column; gap:16px; max-width:760px; margin:0 auto;}
+  .announce-card{
+    background:#fff; border:1px solid var(--line); border-radius:16px;
+    padding:20px 24px; display:flex; gap:18px; align-items:flex-start;
+  }
+  .announce-pin{
+    flex:0 0 auto; width:46px; height:46px; border-radius:12px;
+    background:var(--mist); display:flex; align-items:center; justify-content:center;
+    font-size:1.2rem;
+  }
+  .announce-card.pinned .announce-pin{background:var(--gold); color:#fff;}
+  .announce-content{flex:1;}
+  .announce-top{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:4px;}
+  .announce-top h4{color:var(--plum-deep); font-size:1.05rem; font-family:'Fraunces',serif;}
+  .announce-date{font-size:.76rem; color:var(--plum-soft); text-transform:uppercase; letter-spacing:.08em; font-weight:600;}
+  .announce-tag{
+    font-size:.68rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+    background:var(--plum-deep); color:#fff; padding:3px 9px; border-radius:999px;
+  }
+  .announce-card p{color:#4d4255; font-size:.93rem;}
+
+  .join-section{background:var(--mist);}
+  .join-grid{display:grid; grid-template-columns:1.1fr 0.9fr; gap:48px; align-items:center;}
+  .join-grid h2{color:var(--plum-deep); margin-bottom:14px;}
+  .join-grid p{color:#4d4255;}
+  .join-card{
+    background:#fff; border-radius:20px; padding:28px; display:flex; flex-direction:column; gap:18px;
+  }
+  .join-row{display:flex; gap:14px; align-items:flex-start; font-size:.92rem; color:#4d4255;}
+  .join-row span{font-size:1.2rem;}
+  .join-btn{text-align:center; margin-top:6px;}
+
+  @media (max-width:860px){
+    .join-grid{grid-template-columns:1fr;}
+  }
+
   /* ===== About ===== */
   .about-grid{display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center;}
-  .about-grid img{border-radius:20px;}
+  .about-grid img{border-radius:20px; width:100%;}
   .about-text h2{color:var(--plum-deep); margin-bottom:16px;}
   .about-text p{color:#4d4255; margin-bottom:14px;}
   .verse-block{
@@ -358,6 +592,12 @@
   .info-card{background:#fff; border:1px solid var(--line); border-radius:16px; padding:24px; text-align:center;}
   .info-card .ic-label{font-size:.74rem; letter-spacing:.14em; text-transform:uppercase; color:var(--plum-soft); font-weight:600; margin-bottom:8px;}
   .info-card .ic-val{font-family:'Fraunces',serif; font-weight:600; color:var(--plum-deep); font-size:1.15rem;}
+
+  .contact-value a{
+    color:var(--plum-deep); text-decoration:none; font-weight:600;
+    border-bottom:1.5px solid var(--gold); transition:.2s;
+  }
+  .contact-value a:hover{color:var(--gold);}
 
   footer{
     background:var(--plum-deep); color:#EAE2EF; padding:50px 24px 28px; text-align:center;
@@ -376,6 +616,26 @@
 </style>
 </head>
 <body>
+
+<!-- ADMIN TOOLBAR -->
+<div class="admin-toolbar" id="adminToolbar">
+  <div class="at-label">🛠️ Admin Mode <span class="at-hint">— click any outlined section to edit it</span></div>
+  <button class="admin-mode-toggle on" id="adminModeToggle">Editing ON</button>
+</div>
+
+<!-- CONTENT EDIT MODAL -->
+<div class="cedit-overlay" id="ceditOverlay">
+  <div class="cedit-box">
+    <button class="cedit-close" id="ceditClose">&times;</button>
+    <h4 id="ceditTitle">Edit Content</h4>
+    <div id="ceditFields"></div>
+    <div class="cedit-actions">
+      <button class="cedit-save" id="ceditSave">Save</button>
+      <button class="cedit-cancel" id="ceditCancel">Cancel</button>
+    </div>
+    <div class="cedit-msg" id="ceditMsg"></div>
+  </div>
+</div>
 
 <header class="topbar">
   <div class="topbar-inner">
@@ -452,6 +712,9 @@
         <div class="eyebrow">What's Coming</div>
         <h2>Upcoming Events</h2>
         <p>Stay connected with what's happening at ECC Bacoor.</p>
+      </div>
+      <div class="events-admin-bar">
+        <button class="btn-add-event" id="btnAddEvent">＋ Add New Event</button>
       </div>
       <div class="events-grid" id="eventsGrid"></div>
     </div>
@@ -532,6 +795,7 @@
         <h2>Announcements</h2>
         <p>The latest updates from the Youth Ministry.</p>
       </div>
+      <div class="announce-actions"><button class="btn-add-announce" data-community="youth">＋ Add Announcement</button></div>
       <div class="announce-list" id="youthAnnouncementsList"></div>
     </div>
   </section>
@@ -571,6 +835,7 @@
         <h2>Announcements</h2>
         <p>The latest updates from the Young Adults community.</p>
       </div>
+      <div class="announce-actions"><button class="btn-add-announce" data-community="ya">＋ Add Announcement</button></div>
       <div class="announce-list" id="yaAnnouncementsList"></div>
     </div>
   </section>
@@ -610,6 +875,7 @@
         <h2>Announcements</h2>
         <p>The latest updates from the Choir Ministry.</p>
       </div>
+      <div class="announce-actions"><button class="btn-add-announce" data-community="choir">＋ Add Announcement</button></div>
       <div class="announce-list" id="choirAnnouncements"></div>
     </div>
   </section>
@@ -636,13 +902,67 @@
   <section>
     <div class="section-inner">
       <div class="about-grid">
-        <img id="aboutImg" src="" alt="Ang Dios ay Pag-ibig">
+        <div class="editable-img-wrap" data-img-id="aboutImg">
+          <img id="aboutImg" src="" alt="Ang Dios ay Pag-ibig">
+          <button class="img-swap-btn" data-img-target="aboutImg">📷 Change Photo</button>
+        </div>
         <div class="about-text">
           <div class="eyebrow">Who We Are</div>
-          <h2>Evangelical Christian Church – Bacoor</h2>
-          <p>ECC Bacoor is a community built on prayer, worship, and fellowship. Every week, our singers, dancers, and musicians lead us into His presence — at our Wednesday prayer meetings and Sunday services.</p>
-          <p>We believe in welcoming every member to grow, serve, and be part of God's family.</p>
-          <div class="verse-block">"Ang Dios ay Pag-ibig." — 1 John 4:8</div>
+          <div class="editable-block" data-edit-id="about-heading" data-edit-label="Church Name" data-edit-type="text">
+            <h2 id="about-heading">Evangelical Christian Church – Bacoor</h2>
+            <button class="edit-btn">✎ Edit</button>
+          </div>
+          <div class="editable-block" data-edit-id="about-p1" data-edit-label="About Paragraph 1" data-edit-type="textarea">
+            <p id="about-p1">ECC Bacoor is a community built on prayer, worship, and fellowship. Every week, our singers, dancers, and musicians lead us into His presence — at our Wednesday prayer meetings and Sunday services.</p>
+            <button class="edit-btn">✎ Edit</button>
+          </div>
+          <div class="editable-block" data-edit-id="about-p2" data-edit-label="About Paragraph 2" data-edit-type="textarea">
+            <p id="about-p2">We believe in welcoming every member to grow, serve, and be part of God's family.</p>
+            <button class="edit-btn">✎ Edit</button>
+          </div>
+          <div class="editable-block" data-edit-id="about-verse" data-edit-label="Scripture Verse" data-edit-type="text">
+            <div class="verse-block" id="about-verse">"Ang Dios ay Pag-ibig." — 1 John 4:8</div>
+            <button class="edit-btn">✎ Edit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-section">
+    <div class="section-inner">
+      <div class="section-head">
+        <div class="eyebrow">Visit Or Reach Us</div>
+        <h2>Contact Information</h2>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-card editable-block" data-edit-id="contact-location" data-edit-label="Location" data-edit-type="text">
+          <div class="contact-icon">📍</div>
+          <div class="contact-label">Location</div>
+          <div class="contact-value" id="contact-location">107 Evangelista St., Banalo, Bacoor, Philippines, 4102</div>
+          <button class="edit-btn">✎ Edit</button>
+        </div>
+        <div class="contact-card editable-block" data-edit-id="contact-phone" data-edit-label="Telephone Number" data-edit-type="text">
+          <div class="contact-icon">☎️</div>
+          <div class="contact-label">Telephone No.</div>
+          <div class="contact-value" id="contact-phone">(046) 434 4503</div>
+          <button class="edit-btn">✎ Edit</button>
+        </div>
+        <div class="contact-card editable-block" data-edit-id="contact-email" data-edit-label="Email Address" data-edit-type="text">
+          <div class="contact-icon">✉️</div>
+          <div class="contact-label">Email</div>
+          <div class="contact-value" id="contact-email">officialeccbacoor@gmail.com</div>
+          <button class="edit-btn">✎ Edit</button>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">📱</div>
+          <div class="contact-label">Facebook</div>
+          <div class="contact-value"><a href="https://www.facebook.com/EvangelicalChristianChurchBacoor" target="_blank" rel="noopener" id="contact-facebook">Evangelical Christian Church - Bacoor</a></div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">▶️</div>
+          <div class="contact-label">YouTube</div>
+          <div class="contact-value"><a href="https://www.youtube.com/@eccbacoor" target="_blank" rel="noopener" id="contact-youtube">Evangelical Christian Church - Bacoor</a></div>
         </div>
       </div>
     </div>
@@ -2662,6 +2982,125 @@ CHURCH_DATA.choirAnnouncements = [
   {"date":"2026-06-12","title":"Choir Set List for July Posted","tag":"Update","pinned":false,"body":"The song line-up for July's services has been posted on the bulletin board. Section leaders will share practice tracks this week."}
 ];
 
+// ===== Admin Edit Mode System =====
+let adminEditMode = false;
+let currentEditingField = null;
+let currentEditingType = null;
+
+function updateAdminToolbar(){
+  const toolbar = document.getElementById('adminToolbar');
+  const toggle = document.getElementById('adminModeToggle');
+  if(accessLevel === 'admin'){
+    toolbar.classList.add('show');
+    document.body.classList.toggle('admin-edit-mode', adminEditMode);
+    toggle.classList.toggle('on', adminEditMode);
+    toggle.classList.toggle('off', !adminEditMode);
+    toggle.textContent = adminEditMode ? 'Editing ON' : 'Editing OFF';
+  } else {
+    toolbar.classList.remove('show');
+    document.body.classList.remove('admin-edit-mode');
+  }
+}
+
+function attachEditHandlers(){
+  document.querySelectorAll('.editable-block[data-edit-id]').forEach(block => {
+    const editBtn = block.querySelector('.edit-btn');
+    if(editBtn){
+      editBtn.addEventListener('click', () => openContentEditor(block));
+    }
+  });
+  document.querySelectorAll('.editable-img-wrap[data-img-id]').forEach(wrap => {
+    const swapBtn = wrap.querySelector('.img-swap-btn');
+    if(swapBtn){
+      swapBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        openImageSwapper(wrap.getAttribute('data-img-id'));
+      });
+    }
+  });
+}
+
+function openContentEditor(block){
+  currentEditingField = block.getAttribute('data-edit-id');
+  currentEditingType = block.getAttribute('data-edit-type');
+  const label = block.getAttribute('data-edit-label');
+  const currentVal = document.getElementById(currentEditingField)?.textContent || '';
+  
+  document.getElementById('ceditTitle').textContent = `Edit: ${label}`;
+  const fieldsDiv = document.getElementById('ceditFields');
+  const fieldHtml = currentEditingType === 'textarea'
+    ? `<div class="cedit-field"><label>${label}</label><textarea id="ceditInput">${currentVal.replace(/</g,'&lt;')}</textarea></div>`
+    : `<div class="cedit-field"><label>${label}</label><input type="text" id="ceditInput" value="${currentVal.replace(/"/g,'&quot;')}"></div>`;
+  fieldsDiv.innerHTML = fieldHtml;
+  document.getElementById('ceditOverlay').classList.add('show');
+}
+
+function closeContentEditor(){
+  document.getElementById('ceditOverlay').classList.remove('show');
+  currentEditingField = null;
+}
+
+document.getElementById('ceditCancel').addEventListener('click', closeContentEditor);
+document.getElementById('ceditClose').addEventListener('click', closeContentEditor);
+document.getElementById('ceditOverlay').addEventListener('click', (e) => {
+  if(e.target.id === 'ceditOverlay') closeContentEditor();
+});
+
+document.getElementById('ceditSave').addEventListener('click', () => {
+  if(!currentEditingField) return;
+  const input = document.getElementById('ceditInput');
+  const newVal = input.value;
+  const el = document.getElementById(currentEditingField);
+  if(el){
+    el.textContent = newVal;
+    localStorage.setItem(`ecc_edit_${currentEditingField}`, newVal);
+  }
+  closeContentEditor();
+});
+
+function openImageSwapper(imgId){
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.onchange = (e) => {
+    const file = e.target.files[0];
+    if(file){
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        const b64 = evt.target.result;
+        const img = document.getElementById(imgId);
+        if(img) img.src = b64;
+        localStorage.setItem(`ecc_img_${imgId}`, b64);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  input.click();
+}
+
+document.getElementById('adminModeToggle').addEventListener('click', () => {
+  if(accessLevel !== 'admin') return;
+  adminEditMode = !adminEditMode;
+  updateAdminToolbar();
+  attachEditHandlers();
+});
+
+// Load persisted edits on page load
+function loadPersistedEdits(){
+  document.querySelectorAll('[data-edit-id]').forEach(el => {
+    const stored = localStorage.getItem(`ecc_edit_${el.getAttribute('data-edit-id')}`);
+    if(stored){
+      const target = document.getElementById(el.getAttribute('data-edit-id'));
+      if(target) target.textContent = stored;
+    }
+  });
+  document.querySelectorAll('[data-img-id]').forEach(img => {
+    const stored = localStorage.getItem(`ecc_img_${img.getAttribute('id')}`);
+    if(stored) img.src = stored;
+  });
+}
+loadPersistedEdits();
+
 // ===== Schedules access control =====
 const MEMBER_CODE = 'ecc-member-2026';
 const ADMIN_CODE = 'ecc-admin-2026';
@@ -2676,10 +3115,13 @@ function applyAccessUI(){
     unlocked.classList.add('show');
     badge.textContent = accessLevel === 'admin' ? 'Admin access' : 'Member access';
     badge.classList.toggle('admin', accessLevel === 'admin');
+    updateAdminToolbar();
+    attachEditHandlers();
     renderCalendar();
   } else {
     locked.style.display = 'block';
     unlocked.classList.remove('show');
+    updateAdminToolbar();
   }
 }
 
@@ -2703,9 +3145,11 @@ document.getElementById('loginForm').addEventListener('submit', (e) => {
 
 document.getElementById('logoutBtn').addEventListener('click', () => {
   accessLevel = null;
+  adminEditMode = false;
   sessionStorage.removeItem('ecc_access');
   selectedDate = null;
   closeScheduleModal();
+  updateAdminToolbar();
   applyAccessUI();
 });
 
