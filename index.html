@@ -116,6 +116,50 @@
   }
   .arch:nth-child(odd){background:var(--mist);}
 
+  /* ===== Pastors Section ===== */
+  .pastors-section{
+    background:var(--cream);
+    padding:60px 24px;
+  }
+  .pastors-container{
+    max-width:1000px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+    align-items:center;
+  }
+  .pastors-content h2{
+    color:var(--plum-deep);
+    font-size:clamp(1.8rem,3vw,2.2rem);
+    margin-bottom:20px;
+  }
+  .pastors-content p{
+    color:#5b4f63;
+    font-size:1rem;
+    line-height:1.7;
+    margin-bottom:16px;
+  }
+  .pastors-image{
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 10px 40px rgba(43,41,38,0.15);
+  }
+  .pastors-image img{
+    width:100%;
+    height:auto;
+    display:block;
+  }
+  @media(max-width:768px){
+    .pastors-container{
+      grid-template-columns:1fr;
+      gap:30px;
+    }
+    .pastors-section{
+      padding:50px 24px;
+    }
+  }
+
   section{padding:80px 24px;}
   .section-inner{max-width:1100px; margin:0 auto;}
   .section-head{text-align:center; max-width:600px; margin:0 auto 48px;}
@@ -672,6 +716,24 @@
   <div class="arch-row">
     <div class="arch"></div><div class="arch"></div><div class="arch"></div><div class="arch"></div><div class="arch"></div>
   </div>
+
+  <!-- PASTORS SECTION -->
+  <section class="pastors-section">
+    <div class="pastors-container">
+      <div class="pastors-content">
+        <h2>Our Pastors</h2>
+        <p>
+          We are blessed to be led by dedicated pastors who serve with passion and commitment to our church community. They bring together years of experience, spiritual wisdom, and a genuine love for our congregation.
+        </p>
+        <p>
+          Our pastoral team is devoted to guiding us through God's Word, providing spiritual counsel, and fostering a welcoming community where all are encouraged to grow in faith.
+        </p>
+      </div>
+      <div class="pastors-image">
+        <img src="pastors.webp" alt="Our Pastoral Team">
+      </div>
+    </div>
+  </section>
 
   <section>
     <div class="section-inner">
